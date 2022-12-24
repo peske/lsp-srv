@@ -51,15 +51,12 @@ func copyPackages(src string) error {
 		utils.EnsureDir(filepath.Join(src, p))
 		utils.EnsureDir(p)
 	}
-	skipFn := func(file string) bool {
-		return file == "safetoken_test.go"
-	}
 	for _, p := range lspPackages {
 		dst := filepath.Join("lsp", p)
 		if err := os.RemoveAll(dst); err != nil && !os.IsNotExist(err) {
 			return err
 		}
-		if err := utils.CopyDir(filepath.Join(src, "lsp", p), dst, replace, skipFn); err != nil {
+		if err := utils.CopyDir(filepath.Join(src, "lsp", p), dst, replace); err != nil {
 			return err
 		}
 	}
@@ -67,7 +64,7 @@ func copyPackages(src string) error {
 		if err := os.RemoveAll(p); err != nil && !os.IsNotExist(err) {
 			return err
 		}
-		if err := utils.CopyDir(filepath.Join(src, p), p, replace, skipFn); err != nil {
+		if err := utils.CopyDir(filepath.Join(src, p), p, replace); err != nil {
 			return err
 		}
 	}
@@ -120,5 +117,8 @@ func replace(content string) string {
 			"golang.org/x/tools/gopls/internal/"+p,
 			"github.com/peske/lsp-srv/"+p, -1)
 	}
+	content = strings.Replace(content,
+		"golang.org/x/tools/gopls/internal/lsp/...",
+		"github.com/peske/lsp-srv/lsp/...", -1)
 	return content
 }

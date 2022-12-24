@@ -13,8 +13,9 @@ The following packages are simply copied from the original `golang.org/x/tools/g
 
 - [`lsp/lsppos`](./lsp/lsppos)
 - [`lsp/protocol`](./lsp/protocol)
-- [`lsp/safetoken`](./lsp/safetoken), except for `safetoken_test.go` file which is skipped to avoid adding unnecessary
-  dependencies
+- [`lsp/safetoken`](./lsp/safetoken). Note that a test file from this package will add some unnecessary dependencies, so
+  we should remove these before committing the code. These are all starting with `golang.org/x/tools` (this module does
+  not require any `goolang.org/x/tools` packages).
 - [`span`](./span)
 
 After that we have replaced all `golang.org/x/tools/gopls/internal/...` occurrences with the corresponding
