@@ -84,19 +84,24 @@ func replaceImports(dir string) error {
 			}
 			continue
 		}
-		c, err := os.ReadFile(fd.Name())
+		f := filepath.Join(dir, fd.Name())
+		c, err := os.ReadFile(f)
 		if err != nil {
 			return err
 		}
-		str := replace(string(c))
-		if err = os.WriteFile(fd.Name(), []byte(str), 0700); err != nil {
+		str := replace(f, string(c))
+		if err = os.WriteFile(f, []byte(str), 0700); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func replace(content string) string {
+func replace(fp, content string) string {
+	if strings.HasSuffix(strings.ToLower(fp), ".md") {
+		// We don't want to replace in Markdown files
+		return content
+	}
 	for _, p := range utils.Packages {
 		content = strings.Replace(content,
 			"golang.org/x/tools/internal/"+p,

@@ -56,7 +56,7 @@ package lsp
 import (
 	"context"
 
-	"golang.org/x/tools/gopls/internal/lsp/protocol"
+	"github.com/peske/lsp-srv/lsp/protocol"
 )
 
 {{range $key, $v := .Stuff}}
