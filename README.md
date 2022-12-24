@@ -29,6 +29,11 @@ The previous steps can be done by using a [copy tool](./_copy_tool). The tool au
 - `cd` into the root directory of this repository and execute: `./cptool /path/to/golang.org/x/tools/gopls/internal`
   (change the source path appropriately).
 
+We've also copied `lsp/helper` package, but there we've introduced two changes:
+
+- Package name `main` is changed to `helper`;
+- We've added a custom file `generator.go`.
+
 # Why?
 
 The copied packages contain a very nice functionality which isn't accessible since they are `internal` in the original
