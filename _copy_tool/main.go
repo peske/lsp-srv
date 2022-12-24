@@ -72,19 +72,31 @@ func copyPackages(src string) error {
 }
 
 func replaceImports(dir string) error {
+	if strings.Contains(dir, "_copy_tool") {
+		// We don't want to replace in this directory
+		return nil
+	}
 	var err error
 	var fds []os.DirEntry
 	if fds, err = os.ReadDir(dir); err != nil {
 		return err
 	}
 	for _, fd := range fds {
+		if strings.HasPrefix(fd.Name(), ".") {
+			// We don't want to replace in hidden files/directories
+			continue
+		}
+		f := filepath.Join(dir, fd.Name())
 		if fd.IsDir() {
-			if err = replaceImports(fd.Name()); err != nil {
+			if err = replaceImports(f); err != nil {
 				return err
 			}
 			continue
 		}
-		f := filepath.Join(dir, fd.Name())
+		if !strings.HasSuffix(strings.ToLower(f), ".go") && !strings.HasSuffix(strings.ToLower(f), ".ts") {
+			// We want to replace only in *.go and *.ts files
+			continue
+		}
 		c, err := os.ReadFile(f)
 		if err != nil {
 			return err
