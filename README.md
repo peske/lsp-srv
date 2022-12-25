@@ -1,49 +1,64 @@
 # What?
 
-The module provides a wireframe for implementing [Language Server protocol](https://langserver.org/) server in Go. Note
+A module provides a wireframe for implementing [Language Server protocol](https://langserver.org/) server in Go. Note
 that it does not provide any actual end-user functionality, just a general wireframe: message types, JSON RPC 2.0
-serialization, communication etc.
+serialization, communication etc. In other words:
 
-The module is based on the existing on the existing
-[`golang.org/x/tools/gopls`](https://github.com/golang/tools/tree/master/gopls) module.
+> By using this package you can develop LSP server in Go for any purpose / programming language, without having to take
+> care about the underlying implementation of JSON RPC 2.0, connections, etc. You can focus on the actual features you
+> need.
+
+Our main intention is to create:
+
+> **The simplest and cleanest way to start developing your own LSP server implementations.**
+
+Usage of the module is explained in [the documentation](./doc/README.md).
 
 # How?
 
-The following packages are simply copied from the original `golang.org/x/tools/gopls/internal` directory:
-
-- [`lsp/lsppos`](./lsp/lsppos)
-- [`lsp/protocol`](./lsp/protocol)
-- [`lsp/safetoken`](./lsp/safetoken). Note that a test file from this package will add some unnecessary dependencies, so
-  we should remove these before committing the code. These are all starting with `golang.org/x/tools` (this module does
-  not require any `goolang.org/x/tools` packages).
-- [`span`](./span)
-
-After that we have replaced all `golang.org/x/tools/gopls/internal/...` occurrences with the corresponding
-`github.com/peske/lsp-srv/...`.
-
-The previous steps can be done by using a [copy tool](./_copy_tool). The tool automatically copies packages from
-`golang.org/x/tools/gopls/internal` into this repository. Usage:
-
-- `cd` into `./_copy_tool` directory, and build the tool by executing `go build -o ../cptool`. Note that the executable
-  is stored in the root directory of this repository.
-- `cd` into the root directory of this repository and execute: `./cptool /path/to/golang.org/x/tools/gopls/internal`
-  (change the source path appropriately).
-
-We've also copied `lsp/helper` package, but there we've introduced two changes:
-
-- Package name `main` is changed to `helper`;
-- We've added a custom file `generator.go`.
+This module is created by copying some packages from
+[`golang.org/x/tools/gopls`](https://github.com/golang/tools/tree/master/gopls) module, and adding some custom packages.
+More details in `./doc/code.md`(./doc/code.md).
 
 # Why?
 
-The copied packages contain a very nice functionality which isn't accessible since they are `internal` in the original
-module.
+Probably the best implementation of LSP server in Go is in the mentioned
+[`golang.org/x/tools/gopls`](https://github.com/golang/tools/tree/master/gopls) module, but it suffers from two
+problems:
+
+- LSP related code is _hidden_ in an `internal` parts of the module (`golang.org/x/tools/gopls/internal`), so it cannot
+  be accessed / used from an external code.
+- General LSP-related features are not separated from Go-specific implementation, thus making it very hard to use for
+  building an LSP server for some other language.
+
+In this module we're stripping out only general wireframe parts, and making it accessible for the external code.
+
+## Alternatives?
+
+There are some notable alternatives:
+
+- https://github.com/sourcegraph/go-lsp
+- https://github.com/saibing/bingo
+- https://github.com/tliron/glsp
+
+But they are suffering some other drawbacks:
+
+- Often not actively developed, not supporting the latest LSP versions.
+- Some being aborted and archived in favor of mentioned `gopls`.
+- Usually lacking a comprehensive documentation.
+- In some cases the code quality and design decisions are not up to our standards.
+- They are missing some useful higher-level features, like caching the editor content at the server side. Although this
+  particular feature kinda goes beyond the base LSP wireframe scope, and the calling code can implement it by using the
+  implemented LSP stuff, we assume that it is general enough, and used enough so that it makes sense to expose it in the
+  base package. There's simply no need to make all the module users to reinvent the wheel by making their own caching.
+  Note that such features **are optional** in our module, and the calling code can decide to use them or not.
+
+> **Note:** We apologize to the maintainers of the mentioned alternatives for our criticism. We **do respect** your
+> work, and everything said here is **just our opinion** that explains our reasoning to start this project.
 
 # License?
 
-The same "BSD-3-Clause license" used by the original repository. Here I've changed _Copyright_ section only because we
-have some additional code that may have some errors, and I didn't want anyone to blame the original developers ("The Go
-Authors"). But they deserve all the credits for the code we're using here.
+The same ["BSD-3-Clause license"](./LICENSE) used by the original repository.
 
 # Version?
 
