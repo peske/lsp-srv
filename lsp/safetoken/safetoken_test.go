@@ -9,8 +9,8 @@ import (
 	"go/types"
 	"testing"
 
-	"golang.org/x/tools/go/packages"
 	"github.com/peske/x-tools-internal/testenv"
+	"golang.org/x/tools/go/packages"
 )
 
 // This test reports any unexpected uses of (*go/token.File).Offset within

@@ -11,7 +11,7 @@ To create the generator you should implement a temporary `main` package with `ma
 ```go
 package main
 
-import "github.com/peske/lsp/helper"
+import "github.com/peske/lsp-srv/lsp/helper"
 
 func main() {
 	helper.Generate()
@@ -26,17 +26,20 @@ go build -o lspgen
 
 Now you should have `lspgen` executable in the working directory, and you can delete the temporary code.
 
-> **Note:** You should create a new generator whenever you update the version of `github.com/peske/lsp` module.
+> **Note:** You should create a new generator whenever you update the version of `github.com/peske/lsp-srv` module.
 
 ## Prepare the custom code
 
 Somewhere in your project you should have `lsp` package/directory. Note that the name matters - it has to be `lsp`. In
 this package you should create several things:
 
-- Type that will be used as LSP server handler. In the simplest case it can be a structure without any fields, like
-  `type Server struct{}`. You can add custom fields to this type if you need them.
-- Function `func notImplemented(method string) error` that will be called for LSP methods that you haven't implemented.
-- Add `//go:generate` instruction.
+- Type that will be used as LSP server handler. This type should at least contain one field of type
+  `protocol.ClientCloser`, although you can add as many additional fields as you need.
+- A function with the signature `notImplemented(method string) error`. It will be called whenever LSP method call that
+  you haven't implemented happens.
+- Factory function that accepts one argument of type `protocol.ClientCloser`, and returns an instance of the type you've
+  created in the previous steps.
+- Add `//go:generate` instruction that will add all the methods defined by `protocol.Server` interface to your type.
 
 For example, let's say that your `lsp` package is in a subdirectory `./lsp` in your project. Minimal implementation
 would be to create a Go file (let's say `./lsp/server.go`) with the following content:
@@ -44,14 +47,28 @@ would be to create a Go file (let's say `./lsp/server.go`) with the following co
 ```go
 package lsp
 
-import "fmt"
+import (
+  "fmt"
+  
+  "github.com/peske/lsp-srv/lsp/protocol"
+)
 
-type Server struct{}
+// Server is the type mentioned in the instructions. 
+type Server struct {
+  client protocol.ClientCloser
+}
 
+// NewServer is the factory function mentioned in the instructions.
+func NewServer(client protocol.ClientCloser) *Server {
+	return &Server{client: client}
+}
+
+// notImplemented is the function mentioned in the instructions. 
 func notImplemented(method string) error {
   return fmt.Errorf("'%s' not implemented", method)
 }
 
+// go generate instruction mentioned in the instructions.
 //go:generate ../lspgen -o server_gen.go -u .
 ```
 
@@ -86,8 +103,8 @@ package lsp
 
 import (
 	"context"
-
-	"github.com/peske/lsp/protocol"
+	
+	"github.com/peske/lsp-srv/lsp/protocol"
 )
 
 func (s *Server) CodeAction(context.Context, *protocol.CodeActionParams) ([]protocol.CodeAction, error) {
@@ -120,8 +137,8 @@ func (s *Server) codeAction(ctx context.Context, params *protocol.CodeActionPara
 }
 ```
 
-You can put this function in any file in your `lsp` package - generator will find it. After such implementation is
-created, and after running the generator again, the generated code will contain:
+You can put this function in any file in your `lsp` package and the generator will find it. After that, and after
+running the generator again, the generated code will contain:
 
 ```go
 func (s *Server) CodeAction(ctx context.Context, params *protocol.CodeActionParams) ([]protocol.CodeAction, error) {
@@ -131,3 +148,10 @@ func (s *Server) CodeAction(ctx context.Context, params *protocol.CodeActionPara
 
 In short, you can create only the methods you actually want to implement. Generator will take care of the boilerplate
 for the rest.
+
+### Required LSP method implementation
+
+As already mentioned above, you'll implement only methods that you need for your use case. But in any case you have to
+implement at least `Initialize` method, to report the _capabilities_ of the server you're developing. But explaining
+this is outside the scope of our documentation - this is a part of
+[LSP specification](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/).

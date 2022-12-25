@@ -9,10 +9,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/peske/lsp-srv/lsp/lsprpc"
-	"github.com/peske/lsp-srv/lsp/protocol"
 	"github.com/peske/x-tools-internal/fakenet"
 	"github.com/peske/x-tools-internal/jsonrpc2"
+
+	"github.com/peske/lsp-srv/lsp/lsprpc"
+	"github.com/peske/lsp-srv/lsp/protocol"
 )
 
 // Serve is a struct that exposes the configurable parts of the LSP server as

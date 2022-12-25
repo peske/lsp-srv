@@ -10,9 +10,10 @@ import (
 	"context"
 	"strings"
 
-	"github.com/peske/lsp-srv/lsp/protocol"
 	"github.com/peske/x-tools-internal/event"
 	"github.com/peske/x-tools-internal/jsonrpc2"
+
+	"github.com/peske/lsp-srv/lsp/protocol"
 )
 
 // The StreamServer type is a jsonrpc2.StreamServer that handles incoming

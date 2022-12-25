@@ -54,7 +54,7 @@ But they are suffering some other drawbacks:
   Note that such features **are optional** in our module, and the calling code can decide to use them or not.
 
 > **Note:** We apologize to the maintainers of the mentioned alternatives for our criticism. We **do respect** your
-> work, and everything said here is **just our opinion** that explains our reasoning to start this project.
+> work, and everything said here is **just our opinion** that explains our reasoning for starting this project.
 
 # License?
 

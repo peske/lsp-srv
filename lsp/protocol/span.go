@@ -42,9 +42,10 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/peske/x-tools-internal/bug"
+
 	"github.com/peske/lsp-srv/lsp/safetoken"
 	"github.com/peske/lsp-srv/span"
-	"github.com/peske/x-tools-internal/bug"
 )
 
 // A ColumnMapper maps between UTF-8 oriented positions (e.g. token.Pos,
