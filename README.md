@@ -14,6 +14,9 @@ Our main intention is to create:
 
 Usage of the module is explained in [the documentation](./doc/README.md).
 
+> **Note:** You should also check [`github.com/peske/lsp-srv-ex`](https://github.com/peske/lsp-srv-ex) module which
+> extends this one, and provides some useful additional features.
+
 # How?
 
 This module is created by copying some packages from
@@ -47,11 +50,6 @@ But they are suffering some other drawbacks:
 - Some being aborted and archived in favor of mentioned `gopls`.
 - Usually lacking a comprehensive documentation.
 - In some cases the code quality and design decisions are not up to our standards.
-- They are missing some useful higher-level features, like caching the editor content at the server side. Although this
-  particular feature kinda goes beyond the base LSP wireframe scope, and the calling code can implement it by using the
-  implemented LSP stuff, we assume that it is general enough, and used enough so that it makes sense to expose it in the
-  base package. There's simply no need to make all the module users to reinvent the wheel by making their own caching.
-  Note that such features **are optional** in our module, and the calling code can decide to use them or not.
 
 > **Note:** We apologize to the maintainers of the mentioned alternatives for our criticism. We **do respect** your
 > work, and everything said here is **just our opinion** that explains our reasoning for starting this project.
