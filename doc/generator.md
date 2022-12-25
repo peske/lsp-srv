@@ -30,46 +30,49 @@ Now you should have `lspgen` executable in the working directory, and you can de
 
 ## Prepare the custom code
 
-Somewhere in your project you should have `lsp` package/directory. Note that the name matters - it has to be `lsp`. In
-this package you should create several things:
+Somewhere in your project you should have `lsp` package/directory. The generator will search for the implementations in
+`lsp` package, so the name matters - it has to be `lsp`. In this package you should create several things:
 
-- Type that will be used as LSP server handler. This type should at least contain one field of type
-  `protocol.ClientCloser`, although you can add as many additional fields as you need.
+- Type that will handle the communication, as explained in [README](./README.md).
 - A function with the signature `notImplemented(method string) error`. It will be called whenever LSP method call that
   you haven't implemented happens.
-- Factory function that accepts one argument of type `protocol.ClientCloser`, and returns an instance of the type you've
-  created in the previous steps.
 - Add `//go:generate` instruction that will add all the methods defined by `protocol.Server` interface to your type.
 
-For example, let's say that your `lsp` package is in a subdirectory `./lsp` in your project. Minimal implementation
-would be to create a Go file (let's say `./lsp/server.go`) with the following content:
+For example, we will use the same `Server` type we've created in [README](./README.md#create-a-type), and just add one
+more function and `//go:generate` at the end of the file:
 
 ```go
 package lsp
 
 import (
-  "fmt"
-  
-  "github.com/peske/lsp-srv/lsp/protocol"
+	"context"
+	
+	"github.com/peske/lsp-srv/lsp/protocol"
 )
 
-// Server is the type mentioned in the instructions. 
+// Server is the type.
 type Server struct {
-  client protocol.ClientCloser
+	client protocol.ClientCloser
+	ctx    context.Context
+	cancel func()
 }
 
-// NewServer is the factory function mentioned in the instructions.
-func NewServer(client protocol.ClientCloser) *Server {
-	return &Server{client: client}
+// NewServer is the factory function.
+func NewServer(client protocol.ClientCloser, ctx context.Context, cancel func()) *Server {
+	return &Server{
+		client: client,
+		ctx:    ctx,
+		cancel: cancel,
+    }
 }
 
-// notImplemented is the function mentioned in the instructions. 
+// notImplemented is the function mentioned in the instructions above. 
 func notImplemented(method string) error {
   return fmt.Errorf("'%s' not implemented", method)
 }
 
-// go generate instruction mentioned in the instructions.
-//go:generate ../lspgen -o server_gen.go -u .
+// go generate instruction mentioned in the instructions above.
+//go:generate ../lspgen -o server_gen.go -t Server -u .
 ```
 
 Explanations of `//go:generate` line:
@@ -78,6 +81,8 @@ Explanations of `//go:generate` line:
   package, so we're specifying it as `../lspgen`.
 - We want the output file to be named `server_gen.go` and reside in the same directory as this file (`server.go`), so we
   are specifying `-o server_gen.go`
+- The type we're using is `Server`, so we're specifying `-t Server`. This argument is optional, and it will default to
+  `Server` if not specified.
 - We want the generator to search for the custom implementations in this directory (in `lsp` directory), that's why
   we're specifying `-u .`
 
@@ -148,10 +153,3 @@ func (s *Server) CodeAction(ctx context.Context, params *protocol.CodeActionPara
 
 In short, you can create only the methods you actually want to implement. Generator will take care of the boilerplate
 for the rest.
-
-### Required LSP method implementation
-
-As already mentioned above, you'll implement only methods that you need for your use case. But in any case you have to
-implement at least `Initialize` method, to report the _capabilities_ of the server you're developing. But explaining
-this is outside the scope of our documentation - this is a part of
-[LSP specification](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/).

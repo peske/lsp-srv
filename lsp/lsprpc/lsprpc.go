@@ -19,21 +19,28 @@ import (
 // The StreamServer type is a jsonrpc2.StreamServer that handles incoming
 // streams as a new LSP session, using a shared cache.
 type StreamServer struct {
-	serverFactory func(protocol.ClientCloser) protocol.Server
+	Context               context.Context
+	ContextCancellationFn func() // Context cancellation function
+	serverFactory         func(protocol.ClientCloser, context.Context, func()) protocol.Server
 }
 
 // NewStreamServer creates a StreamServer using the shared cache. If
 // withTelemetry is true, each session is instrumented with telemetry that
 // records RPC statistics.
-func NewStreamServer(serverFactory func(protocol.ClientCloser) protocol.Server) *StreamServer {
-	return &StreamServer{serverFactory: serverFactory}
+func NewStreamServer(serverFactory func(protocol.ClientCloser, context.Context, func()) protocol.Server) *StreamServer {
+	ctx, cancel := context.WithCancel(context.Background())
+	return &StreamServer{
+		Context:               ctx,
+		ContextCancellationFn: cancel,
+		serverFactory:         serverFactory,
+	}
 }
 
 // ServeStream implements the jsonrpc2.StreamServer interface, by handling
 // incoming streams using a new lsp server.
 func (s *StreamServer) ServeStream(ctx context.Context, conn jsonrpc2.Conn) error {
 	client := protocol.ClientDispatcher(conn)
-	server := s.serverFactory(client)
+	server := s.serverFactory(client, s.Context, s.ContextCancellationFn)
 	// Clients may or may not send a shutdown message. Make sure the server is
 	// shut down.
 	// TODO(rFindley): this shutdown should perhaps be on a disconnected context.
