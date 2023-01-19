@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/peske/x-tools-internal v0.0.0-20230119000014-09d47ba9c763
-	golang.org/x/tools v0.5.0
 )
 
 require (

@@ -1,0 +1,3 @@
+github.com/peske/x-tools-internal v0.0.0-20230119000014-09d47ba9c763/go.mod h1:BeOPgTX9m/c9hZkRpyYTeX/0PDy3L51A0VTXRSWjvMQ=
+golang.org/x/mod v0.7.0/go.mod h1:iBbtSCu2XBx23ZKBPSOrRkjjQPZFPuis4dIYUhu/chs=
+golang.org/x/sys v0.4.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
