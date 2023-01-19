@@ -58,17 +58,17 @@ package main
 import (
 	"log"
 	
-	lsp_srv "github.com/peske/lsp-srv"
+	"github.com/peske/lsp-srv/server"
 
 	"github.com/yourgh/yourmodule/lsp"
 )
 
 func main() {
-	var cfg *lsp_srv.Config
+	var cfg *server.Config
 	// Optionally create the config
 
 	// Here we assume that your factory function resides in `lsp` package, thus `lsp.NewServer`.
-	if err := lsp_srv.Run(lsp.NewServer, cfg); err != nil {
+	if err := server.Run(lsp.NewServer, cfg); err != nil {
 		log.Fatal(err)
 	}
 }
