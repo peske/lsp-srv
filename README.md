@@ -15,7 +15,7 @@ Our main intention is to create:
 Usage of the module is explained in [the documentation](./doc/README.md).
 
 > **Note:** You should also check [`github.com/peske/lsp-srv-ex`](https://github.com/peske/lsp-srv-ex) module which
-> extends this one, and provides some useful additional features.
+  extends this one, and provides some useful additional features.
 
 # How?
 
