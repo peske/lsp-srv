@@ -5,8 +5,8 @@ that it does not provide any actual end-user functionality, just a general wiref
 serialization, communication etc. In other words:
 
 > By using this package you can develop LSP server in Go for any purpose / programming language, without having to take
-> care about the underlying implementation of JSON RPC 2.0, connections, etc. You can focus on the actual features you
-> need.
+  care about the underlying implementation of JSON RPC 2.0, connections, etc. You can focus on the actual features you
+  need.
 
 Our main intention is to create:
 
@@ -56,9 +56,12 @@ But they are suffering some other drawbacks:
 
 # License?
 
-The same ["BSD-3-Clause license"](./LICENSE) used by the original repository.
+The same license as the original one - [BSD-3-Clause license](./LICENSE). Although almost all the code is created by the
+authors of the original module (`The Go Authors`), we've changed copyright here to `Fat Dragon and authors` not to get
+the credits, but to protect the original authors of any responsibility if there are any problems in the code that we've
+changed. All credits should go to the authors of the original module.
 
 # Version?
 
 Current `main` branch is based on the original repository commit
-[eb70795](https://github.com/golang/tools/commit/eb70795aaccb8e6c9615c88085ef3414ba04b8c9) from December 17, 2022.
+[3e6f71b](https://github.com/golang/tools/commit/3e6f71bba4359aeb7a301d361ee3cf95e8799599) from January 17, 2023.

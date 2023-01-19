@@ -73,6 +73,8 @@ slow:
 	return u.Path, nil
 }
 
+// TODO(adonovan): document this function, and any invariants of
+// span.URI that it is supposed to establish.
 func URIFromURI(s string) URI {
 	if !strings.HasPrefix(s, "file://") {
 		return URI(s)
@@ -172,4 +174,12 @@ func isWindowsDriveURIPath(uri string) bool {
 		return false
 	}
 	return uri[0] == '/' && unicode.IsLetter(rune(uri[1])) && uri[2] == ':'
+}
+
+// Dir returns the URI for the directory containing uri. Dir panics if uri is
+// not a file uri.
+//
+// TODO(rfindley): add a unit test for various edge cases.
+func Dir(uri URI) URI {
+	return URIFromPath(filepath.Dir(uri.Filename()))
 }

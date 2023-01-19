@@ -1,4 +1,4 @@
-package lsp_srv
+package server
 
 import "time"
 

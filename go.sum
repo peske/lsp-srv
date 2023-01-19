@@ -1,4 +1,13 @@
-github.com/peske/x-tools-internal v0.0.0-20221224071855-be09cda228c7 h1:wtro0MnvQFBqIUmq0vMlYbox3+lLfMvrxopLO/GXv0A=
-github.com/peske/x-tools-internal v0.0.0-20221224071855-be09cda228c7/go.mod h1:BeOPgTX9m/c9hZkRpyYTeX/0PDy3L51A0VTXRSWjvMQ=
 github.com/peske/x-tools-internal v0.0.0-20221224074235-165c0e8343d6 h1:NFYI3s+xjBmTVAKq3lFOmKMiehrdaI5o8O0D8Eu/004=
 github.com/peske/x-tools-internal v0.0.0-20221224074235-165c0e8343d6/go.mod h1:BeOPgTX9m/c9hZkRpyYTeX/0PDy3L51A0VTXRSWjvMQ=
+github.com/peske/x-tools-internal v0.0.0-20230118165812-2267e020dd5d h1:9OUeOhRaFJ/eNJXu8N1uKIn9Woeaxy4jTW7VPFwVGUw=
+github.com/peske/x-tools-internal v0.0.0-20230118165812-2267e020dd5d/go.mod h1:BeOPgTX9m/c9hZkRpyYTeX/0PDy3L51A0VTXRSWjvMQ=
+github.com/peske/x-tools-internal v0.0.0-20230119000014-09d47ba9c763 h1:KDqfQruK2CtOCI0DqhWYUD7ADUbR+z/+CgvDM3dA3bs=
+github.com/peske/x-tools-internal v0.0.0-20230119000014-09d47ba9c763/go.mod h1:BeOPgTX9m/c9hZkRpyYTeX/0PDy3L51A0VTXRSWjvMQ=
+golang.org/x/mod v0.7.0 h1:LapD9S96VoQRhi/GrNTqeBJFrUjs5UHCAtTlgwA5oZA=
+golang.org/x/mod v0.7.0/go.mod h1:iBbtSCu2XBx23ZKBPSOrRkjjQPZFPuis4dIYUhu/chs=
+golang.org/x/sync v0.1.0 h1:wsuoTGHzEhffawBOhz5CYhcrV4IdKZbEyZjBMuTp12o=
+golang.org/x/sys v0.4.0 h1:Zr2JFtRQNX3BCZ8YtxRE9hNJYC8J6I1MVbMg6owUp18=
+golang.org/x/sys v0.4.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/tools v0.5.0 h1:+bSpV5HIeWkuvgaMfI3UmKRThoTA5ODJTUd8T17NO+4=
+golang.org/x/tools v0.5.0/go.mod h1:N+Kgy78s5I24c24dU8OfWNEotWjutIs8SnJvn5IDq+k=
