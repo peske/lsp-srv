@@ -1,4 +1,4 @@
-// Copyright 2022 The Go Authors. All rights reserved.
+// Copyright 2023 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -6,8 +6,9 @@
 
 package protocol
 
-// Code generated from version 3.17.0 of protocol/metaModel.json.
-// git hash 8de18faed635819dd2bc631d2c26ce4a18f7cf4a (as of 2023-01-14)
+// Code generated from protocol/metaModel.json at ref release/protocol/3.17.3-next.6 (hash 56c23c557e3568a9f56f42435fd5a80f9458957f).
+// https://github.com/microsoft/vscode-languageserver-node/blob/release/protocol/3.17.3-next.6/protocol/metaModel.json
+// LSP metaData.version = 3.17.0.
 
 import (
 	"context"
@@ -31,6 +32,10 @@ type Client interface {
 	ApplyEdit(context.Context, *ApplyWorkspaceEditParams) (*ApplyWorkspaceEditResult, error)   // workspace/applyEdit
 	CodeLensRefresh(context.Context) error                                                     // workspace/codeLens/refresh
 	Configuration(context.Context, *ParamConfiguration) ([]LSPAny, error)                      // workspace/configuration
+	DiagnosticRefresh(context.Context) error                                                   // workspace/diagnostic/refresh
+	InlayHintRefresh(context.Context) error                                                    // workspace/inlayHint/refresh
+	InlineValueRefresh(context.Context) error                                                  // workspace/inlineValue/refresh
+	SemanticTokensRefresh(context.Context) error                                               // workspace/semanticTokens/refresh
 	WorkspaceFolders(context.Context) ([]WorkspaceFolder, error)                               // workspace/workspaceFolders
 }
 
@@ -142,6 +147,18 @@ func clientDispatch(ctx context.Context, client Client, reply jsonrpc2.Replier, 
 			return true, reply(ctx, nil, err)
 		}
 		return true, reply(ctx, resp, nil)
+	case "workspace/diagnostic/refresh":
+		err := client.DiagnosticRefresh(ctx)
+		return true, reply(ctx, nil, err)
+	case "workspace/inlayHint/refresh":
+		err := client.InlayHintRefresh(ctx)
+		return true, reply(ctx, nil, err)
+	case "workspace/inlineValue/refresh":
+		err := client.InlineValueRefresh(ctx)
+		return true, reply(ctx, nil, err)
+	case "workspace/semanticTokens/refresh":
+		err := client.SemanticTokensRefresh(ctx)
+		return true, reply(ctx, nil, err)
 	case "workspace/workspaceFolders":
 		resp, err := client.WorkspaceFolders(ctx)
 		if err != nil {
@@ -210,6 +227,18 @@ func (s *clientDispatcher) Configuration(ctx context.Context, params *ParamConfi
 		return nil, err
 	}
 	return result, nil
+}
+func (s *clientDispatcher) DiagnosticRefresh(ctx context.Context) error {
+	return s.sender.Call(ctx, "workspace/diagnostic/refresh", nil, nil)
+}
+func (s *clientDispatcher) InlayHintRefresh(ctx context.Context) error {
+	return s.sender.Call(ctx, "workspace/inlayHint/refresh", nil, nil)
+}
+func (s *clientDispatcher) InlineValueRefresh(ctx context.Context) error {
+	return s.sender.Call(ctx, "workspace/inlineValue/refresh", nil, nil)
+}
+func (s *clientDispatcher) SemanticTokensRefresh(ctx context.Context) error {
+	return s.sender.Call(ctx, "workspace/semanticTokens/refresh", nil, nil)
 }
 func (s *clientDispatcher) WorkspaceFolders(ctx context.Context) ([]WorkspaceFolder, error) {
 	var result []WorkspaceFolder

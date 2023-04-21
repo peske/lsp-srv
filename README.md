@@ -21,7 +21,7 @@ Usage of the module is explained in [the documentation](./doc/README.md).
 
 This module is created by copying some packages from
 [`golang.org/x/tools/gopls`](https://github.com/golang/tools/tree/master/gopls) module, and adding some custom packages.
-More details in `./doc/code.md`(./doc/code.md).
+More details in [`./doc/code.md`](./doc/code.md).
 
 # Why?
 
@@ -64,4 +64,4 @@ changed. All credits should go to the authors of the original module.
 # Version?
 
 Current `main` branch is based on the original repository commit
-[3e6f71b](https://github.com/golang/tools/commit/3e6f71bba4359aeb7a301d361ee3cf95e8799599) from January 17, 2023.
+[6deeacb](https://github.com/golang/tools/commit/6deeacb5baeccb47a177cd415f7425d8819f022d) from April 20, 2023.
